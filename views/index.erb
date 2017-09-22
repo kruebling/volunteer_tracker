@@ -1,0 +1,26 @@
+<div class="jumbotron">
+  <h1> Project Database </h1>
+</div>
+
+<h2>Add a project to the database:</h2><br>
+
+<form action="/projects" method="post">
+  <label for="title">Project title:</label>
+  <input id="title" name="title" type="text">
+
+  <button type="submit">Create Project</button>
+</form><br>
+
+<% if !@projects.to_s.empty?() %>
+  <p>Click on a project to see information about it and add volunteers to it:</p>
+
+  <ul>
+    <% @projects.each do |project| %>
+    <li><a href="/projects/<%= project.id() %>"><%= project.title() %></a></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>There are no projects added yet!</p>
+<% end %><br>
+
+<p><a href="/volunteers">See all volunteers</a></p>

@@ -3,46 +3,22 @@ require ('bundler/setup')
 require('sinatra')
 require('sinatra/reloader')
 also_reload('lib/**/*.rb')
-require('./lib/word')
+require('./lib/project')
+require('./lib/volunteer')
 require('pry')
+require('pg')
+
+DB = PG.connect({:dbname => "volunteer_tracker"})
 
 get('/') do
-  @list = Word.all()
-  erb(:input)
+  @project = Project.all()
+  erb(:index)
 end
 
-post('/') do
-  vocab = params["vocab"]
-  definition = params["definition"]
-
-  word = Word.new(vocab, definition)
-
-  word.save()
-  @list = Word.sort
-  erb(:input)
-end
-
-get('/words/:id') do
-  @word = Word.find(params[:id])
-  erb(:output)
-end
-
-post('/words/:id') do
-  @word = Word.find(params[:id])
-  Word.delete(@word.id)
-  @list = Word.sort
-  redirect '/'
-  erb(:output)
-end
-
-get('/definition') do
-  @word = Word.find(params[:id])
-  erb(:output)
-end
-
-post('/definition') do
-  @word = Word.find(params[:id])
-  @word.add_definition(@definition)
-  redirect '/'
-  erb(:output)
+post('/projects') do
+  title = params.fetch("title")
+  project = Project.new({:title => title, :id => nil})
+  project.save()
+  @projects = Project.all()
+  erb(:index)
 end

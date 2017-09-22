@@ -37,3 +37,10 @@ patch("/project/:id") do
   @projects = Project.all()
   erb(:index)
 end
+
+delete("/project/:id") do
+  @project = Project.find(params.fetch("id").to_i())
+  @project.delete
+  @projects = Project.all()
+  erb(:index)
+end

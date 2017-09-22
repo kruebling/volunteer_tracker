@@ -11,8 +11,8 @@
   <button type="submit">Create Project</button>
 </form><br>
 
-<% if !@projects.to_s.empty?() %>
-  <p>Click on a project to see information about it and add volunteers to it:</p>
+<% if @projects.any?() %>
+  <p>Click on a project to update project title or delete project:</p>
 
   <ul>
     <% @projects.each do |project| %>

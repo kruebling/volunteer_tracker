@@ -1,16 +1,14 @@
-require 'sinatra'
-require 'sinatra/reloader'
-require './lib/book'
-require './lib/project'
-require './lib/volunteer'
-require 'pg'
-require 'pry'
+require "volunteer"
+require "project"
+require "rspec"
+require "pry"
+require "pg"
 
 DB = PG.connect({:dbname => 'volunteer_tracker_test'})
 
 RSpec.configure do |config|
   config.after(:each) do
-    DB.exec('DELETE FROM projects *;')
     DB.exec('DELETE FROM volunteers *;')
+    DB.exec('DELETE FROM projects *;')
   end
 end

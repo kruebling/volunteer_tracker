@@ -30,7 +30,7 @@ get("/projects/:id") do
 end
 
 
-patch("/projects/:id") do
+patch("/project/:id") do
   title = params.fetch('title')
   @project = Project.find(params.fetch("id").to_i())
   @project.update({:title => title})

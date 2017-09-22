@@ -11,8 +11,6 @@ class Project
   projects = []
   returned_projects.each() do |project|
     projects.push(Project.new(:title => project['title'], :id => project['id'].to_i))
-    title = project.fetch("title")
-    id = project.fetch("id").to_i()
     end
     projects.sort_by {|project| project.title}
   end

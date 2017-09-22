@@ -31,4 +31,25 @@ class Project
     self.title().==(another_project.title()).&(self.id().==(another_project.id()))
   end
 
+  def update(attributes)
+    @title = attributes.fetch(:title, @title)
+    DB.exec("UPDATE projects SET title = '#{@title}' WHERE id = #{self.id()};")
+  end
+
+  def volunteers
+    projects_volunteers = []
+    results = DB.exec("SELECT volunteer_id FROM volunteers WHERE project_id = #{self.id()};")
+    results.each() do |result|
+      volunteer_id = result.fetch("volunteer_id").to_i()
+      volunteer = DB.exec("SELECT * FROM volunteers WHERE id = #{volunteer_id};")
+      name = volunteer.first().fetch("name")
+      projects_volunteers.push(Volunteer.new({:name => name, :id => volunteer_id}))
+    end
+    projects_volunteers
+  end
+
+  def delete
+    DB.exec("DELETE FROM projects WHERE id = #{self.id()};")
+  end
+
 end

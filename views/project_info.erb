@@ -2,6 +2,37 @@
   <h1> <%=@project.title() %> </h1>
 </div>
 
+<h3>Select all volunteers you would like to add to this project:</h3>
+
+<% if @volunteers.any?() %>
+  <form action="/projects/<%= @project.id %>" method="post">
+    <input type="hidden" name="_method" value="patch">
+
+    <% @volunteers.each() do |volunteer| %>
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" name="p_id[]" value="<%= volunteer.id() %>"><%= volunteer.name() %>
+        </label>
+      </div>
+    <% end %>
+
+    <button type="submit">Add Volunteers</button>
+  </form>
+<% end %>
+
+<% if @project.volunteers().any?() %>
+  <h3>Here are all the volunteers working on this project:</h3>
+
+  <ul>
+    <% @project.volunteers().each() do |volunteer| %>
+      <li><%= volunteer.title() %></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>There are no volunteers working on this project yet.</p>
+<% end %>
+
+
 <form action="/project/<%= @project.id() %>" method="post">
   <input type="hidden" name="_method" value="patch">
 
@@ -16,3 +47,5 @@
 
   <button type="submit">Delete Project</button>
 </form>
+
+<p><a href="/">Return to Project Page</a></p>

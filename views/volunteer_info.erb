@@ -1,0 +1,20 @@
+<div class="jumbotron">
+  <h1> <%=@volunteer.name() %> </h1>
+</div>
+
+<form action="/volunteer/<%= @volunteer.id() %>" method="post">
+  <input type="hidden" name="_method" value="patch">
+
+  <label for="name">Rename your volunteer:</label>
+  <input type="text" name="name" id="name">
+
+  <button type="submit">Update Volunteer</button>
+</form>
+
+<form action="/volunteer/<%= @volunteer.id() %>" method="post">
+  <input type="hidden" name="_method" value="delete">
+
+  <button type="submit">Delete Volunteer</button>
+</form>
+
+<p><a href="/">Return to Project Page</a></p>

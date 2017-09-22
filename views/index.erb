@@ -11,8 +11,9 @@
   <button type="submit">Create Project</button>
 </form><br>
 
+
 <% if @projects.any?() %>
-  <p>Click on a project to update project title or delete project:</p>
+  <p>Click on a project to add volunteers, update project title, or delete the project:</p>
 
   <ul>
     <% @projects.each do |project| %>
@@ -23,4 +24,4 @@
   <p>There are no projects added yet!</p>
 <% end %><br>
 
-<p><a href="/volunteers">See all volunteers</a></p>
+<button class="button btn-warning"><a href="/volunteers">Add Volunteers</a></button>

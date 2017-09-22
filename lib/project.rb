@@ -36,7 +36,7 @@ class Project
 
   def volunteers
     projects_volunteers = []
-    results = DB.exec("SELECT volunteer_id FROM volunteers WHERE project_id = #{self.id()};")
+    results = DB.exec("SELECT id FROM volunteers WHERE project_id = #{self.id()};")
     results.each() do |result|
       volunteer_id = result.fetch("volunteer_id").to_i()
       volunteer = DB.exec("SELECT * FROM volunteers WHERE id = #{volunteer_id};")

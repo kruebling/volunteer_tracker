@@ -20,18 +20,23 @@ get('/volunteers') do
   erb(:volunteers)
 end
 
-post('/volunteers') do
+post('/volunteers/:id') do
+  @project = Project.find(params.fetch("id").to_i())
+  project_id = @project.id
   name = params.fetch("name")
   volunteer = Volunteer.new({:name => name, :id => nil})
   volunteer.save()
+  volunteer.update(@project)
   @volunteers = Volunteer.all()
-  erb(:volunteers)
+  @projects = Project.all()
+  erb(:project_info)
 end
 
-post('/projects') do
+post('/project') do
   title = params.fetch("title")
   project = Project.new({:title => title, :id => nil})
   project.save()
+  @volunteers = Volunteer.all()
   @projects = Project.all()
   erb(:index)
 end
@@ -40,13 +45,12 @@ post("/project/:id") do
   @project = Project.find(params.fetch("id").to_i())
   project_id = @project.id
   name = params.fetch("name")
-  volunteer = Volunteer.new({:name => name, :project_id => project_id, :id => nil})
-  volunteer.save()
+
   @projects = Project.all()
   erb(:project_info)
 end
 
-get("/projects/:id") do
+get("/project/:id") do
   @project = Project.find(params.fetch("id").to_i())
   @volunteers = Volunteer.all()
   erb(:project_info)
@@ -57,34 +61,29 @@ get("/volunteers/:id") do
   erb(:volunteer_info)
 end
 
-patch("/projects/:id") do
+
+patch("/project/:id") do
   title = params.fetch('title')
-  @volunteer = Volunteer.find(params.fetch("id").to_i())
-  @volunteers = Volunteer.all
   @project = Project.find(params.fetch("id").to_i())
   @project.update({:title => title})
   @projects = Project.all()
-  erb(:index)
+  @volunteers = Volunteer.all()
+  erb(:project_info)
 end
 
 delete("/project/:id") do
   @project = Project.find(params.fetch("id").to_i())
   @project.delete
   @projects = Project.all()
+  @volunteers = Volunteer.all()
   erb(:index)
 end
 
-patch("/volunteer/:id") do
-  name = params.fetch('name')
-  @volunteer = Volunteer.find(params.fetch("id").to_i())
-  @volunteer.update({:name => name})
-  @volunteers = Volunteer.all()
-  erb(:volunteers)
-end
 
 delete("/volunteer/:id") do
   @volunteer = Volunteer.find(params.fetch("id").to_i())
   @volunteer.delete
   @volunteers = Volunteer.all()
+  @projects = Project.all()
   erb(:index)
 end

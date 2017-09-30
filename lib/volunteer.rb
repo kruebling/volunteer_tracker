@@ -18,7 +18,7 @@ class Volunteer
 
   def self.find(id)
     found_volunteer = DB.exec("SELECT * FROM volunteers WHERE id = #{id};")[0]
-    Volunteer.new({:name => found_volunteer['name'], :id => found_volunteer['id'].to_i, :project_id => found_volunteer['project_id'].to_i})
+    Volunteer.new({:name => found_volunteer['name'], :id => found_volunteer['id'].to_i})
   end
 
   def save
@@ -30,22 +30,12 @@ class Volunteer
     self.name().==(another_volunteer.name()).&(self.id().==(another_volunteer.id()))
   end
 
-  def update(attributes)
-    @name = attributes.fetch(:name, @name)
-    DB.exec("UPDATE volunteers SET name = '#{@name}' WHERE id = #{self.id()};")
+  def update(updated_volunteer)
+    @name = self.name
+    @project_id = updated_volunteer.id
+    @id = self.id
+    DB.exec("UPDATE volunteers SET name = '#{@name}', project_id = '#{@project_id}' WHERE id = #{@id};")
   end
-
-  # def volunteers
-  #   volunteers_volunteers = []
-  #   results = DB.exec("SELECT volunteer_id FROM volunteers WHERE volunteer_id = #{self.id()};")
-  #   results.each() do |result|
-  #     volunteer_id = result.fetch("volunteer_id").to_i()
-  #     volunteer = DB.exec("SELECT * FROM volunteers WHERE id = #{volunteer_id};")
-  #     name = volunteer.first().fetch("name")
-  #     volunteers_volunteers.push(Volunteer.new({:name => name, :id => volunteer_id}))
-  #   end
-  #   volunteers_volunteers
-  # end
 
   def delete
     DB.exec("DELETE FROM volunteers WHERE id = #{self.id()};")
